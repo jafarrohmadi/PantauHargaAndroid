@@ -132,6 +132,18 @@
                     android:textStyle="bold"/>
 
             </LinearLayout>
+            <Button
+                android:id="@+id/registrasigoogle"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="100dp"
+                android:layout_marginLeft="20dp"
+                android:layout_height="42dp"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:background="@drawable/desaintombolmenu"
+                android:text="@string/teks_login1"
+                android:textColor="@color/putih"
+                android:textSize="@dimen/ukuran14sp"
+                android:textStyle="bold"/>
 
 
         </LinearLayout>

@@ -1,6 +1,9 @@
 package id.pantauharga.android.aktivitas;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,6 +12,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -19,6 +23,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
@@ -67,7 +73,8 @@ public class LoginRegistersPengguna extends AppCompatActivity {
     //login
     private String str_loginnamapanggilan = "";
     private String str_loginpassword = "";
-
+    private String str_loginemail = "";
+    private String str_loginnama = "";
     //registrasi
     private String str_regis_namalengkap = "";
     private String str_regis_namapanggilan = "";
@@ -281,6 +288,41 @@ public class LoginRegistersPengguna extends AppCompatActivity {
     /**
      * ==============  LOGIN ======================
      **/
+    public String getUsername() {
+        AccountManager manager = AccountManager.get(this);
+        Account[] accounts = manager.getAccountsByType("com.google");
+        List<String> possibleEmails = new LinkedList<String>();
+
+        for (Account account : accounts) {
+            possibleEmails.add(account.name);
+        }
+
+        if (!possibleEmails.isEmpty() && possibleEmails.get(0) != null) {
+            String email = possibleEmails.get(0);
+            String[] parts = email.split("@");
+            if (parts.length > 0 && parts[0] != null)
+                return parts[0];
+            else
+                return null;
+        } else
+            return null;
+    }
+    public String getEmail() {
+        AccountManager manager = AccountManager.get(this);
+        Account[] accounts = manager.getAccountsByType("com.google");
+        List<String> possibleEmails = new LinkedList<String>();
+
+        for (Account account : accounts) {
+            possibleEmails.add(account.name);
+        }
+
+        if (!possibleEmails.isEmpty() && possibleEmails.get(0) != null) {
+            String email = possibleEmails.get(0);
+            return email;
+        }
+        else
+            return null;
+    }
 
     //MENERIMA HASIL DARI FRAGMENT LOGIN
     public void terimaDataLogin(Bundle bundels) {
@@ -292,7 +334,8 @@ public class LoginRegistersPengguna extends AppCompatActivity {
             //ambil data
             str_loginnamapanggilan = bundels.getString(Konstan.TAG_INTENT_USERNAME);
             str_loginpassword = bundels.getString(Konstan.TAG_INTENT_PASSWORD);
-
+            str_loginemail = bundels.getString(Konstan.TAG_INTENT_EMAIL);
+            str_loginnama = bundels.getString(Konstan.TAG_INTENT_NAMALENGKAP);
             //kirim data ke volley
             parseDataLogin();
 
@@ -317,7 +360,8 @@ public class LoginRegistersPengguna extends AppCompatActivity {
                 LoginKirim loginKirim = new LoginKirim();
                 loginKirim.setUsername(str_loginnamapanggilan);
                 loginKirim.setPassword(str_loginpassword);
-
+                loginKirim.setEmail(str_loginemail);
+                loginKirim.setNama(str_loginnama);
                 return mParseran.konversiPojoJsonLogin(loginKirim);
             }
         })
@@ -390,7 +434,8 @@ public class LoginRegistersPengguna extends AppCompatActivity {
             str_alamatlengkap = logins.getAlamat();
             str_kodepos = logins.getKodepos();
 
-            if (str_namalengkap.length() > 0 && str_nomorhandphone.length() > 4) {
+         //   if (str_namalengkap.length() > 0 && str_nomorhandphone.length() > 4) {
+            if (str_namalengkap.length() > 0) {
 
                 //simpan ke database
                 simpanDatabase(str_namapanggilan, str_namalengkap, str_email,

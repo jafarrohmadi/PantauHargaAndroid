@@ -46,6 +46,8 @@ public class FragmentLogin extends Fragment {
     Button tombolregister;
     @Bind(R.id.tombolmasuk)
     Button tombologin;
+    @Bind(R.id.registrasigoogle)
+    Button registrasigoogle;
 
 
     @Nullable
@@ -60,7 +62,7 @@ public class FragmentLogin extends Fragment {
 
         tombologin.setOnClickListener(listenertombol);
         tombolregister.setOnClickListener(listenertombol);
-
+        registrasigoogle.setOnClickListener(listenertombol);
         return viewfrag;
     }
 
@@ -99,7 +101,22 @@ public class FragmentLogin extends Fragment {
         }
     }
 
+    private void ambilDataLogingoogle() {
 
+        boolean isValids = true;
+
+        if (isValids) {
+
+            //kirim pesan ke aktivitas untuk kirim data
+            Bundle bundle = new Bundle();
+            bundle.putString(Konstan.TAG_INTENT_USERNAME, mLoginRegistersPenggunaAkt.getEmail());
+            bundle.putString(Konstan.TAG_INTENT_PASSWORD, "0");
+            bundle.putString(Konstan.TAG_INTENT_EMAIL, mLoginRegistersPenggunaAkt.getEmail());
+            bundle.putString(Konstan.TAG_INTENT_NAMALENGKAP,mLoginRegistersPenggunaAkt.getUsername());
+            mLoginRegistersPenggunaAkt.terimaDataLogin(bundle);
+
+        }
+    }
     //peringatkan data dan edit text
     private void setelPeringatan(EditText edits, TextInputLayout textInputLayout, int resId) {
         edits.requestFocus();
@@ -136,6 +153,9 @@ public class FragmentLogin extends Fragment {
 
                     ambilDataLogin();
 
+                    break;
+                case R.id.registrasigoogle:
+                    ambilDataLogingoogle();
                     break;
             }
         }

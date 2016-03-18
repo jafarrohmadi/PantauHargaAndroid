@@ -175,6 +175,7 @@
     <string name="scan">Scan</string>
     <string name="btn_scan_now">Scan Now</string>
     <string name="txt_scan_qr_code">Scan QR</string>
+    <string name="teks_login1">login google</string>
 
 
 </resources>
